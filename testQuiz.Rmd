@@ -1,0 +1,27 @@
+---
+title: "testQuiz"
+author: "Matthew Crump"
+date: "7/26/2018"
+output: 
+  html_document:
+    includes:
+      in_header: quizzes/html/header.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+```
+
+```{r testquiz, echo=FALSE, eval=TRUE, cache=FALSE}
+library(yaml)
+library(rjson)
+
+a <- read_yaml(file="quizzes/quizyaml/quiz1.yml")  # read Quiz yaml
+b <- toJSON(a)                                     # convert to JSON
+CON <- file("quizzes/quizjs/test.js")              # Write to .js
+writeLines(c('var quizJSON = ',b,';'),CON, sep="")
+close(CON)
+
+htmltools::includeHTML("quizzes/html/body.html")   # insert quiz body
+```
+
